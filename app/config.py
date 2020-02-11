@@ -27,6 +27,7 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    SECRET_KEY = 'hard to see'
     DEBUG = True
     # SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = \

@@ -27,6 +27,7 @@ moment = Moment()
 
 def create_app(config_name):
     app = Flask(__name__)
+    app.secret_key = 'tmptoset'
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     app.jinja_env.filters['min'] = min
     app.jinja_env.filters['max'] = max

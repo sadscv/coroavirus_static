@@ -7,17 +7,44 @@
 
 @desc: 
 """
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Index, Integer, \
-    LargeBinary, Numeric, SmallInteger, String, \
-    Text, Unicode, UnicodeText
-from sqlalchemy.dialects.mssql.base import BIT, MONEY
+from flask_login import UserMixin
+from sqlalchemy import Column, DateTime, VARCHAR, ForeignKey, Integer, \
+    String, Unicode
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.schema import FetchedValue
-
 
 Base = declarative_base()
 metadata = Base.metadata
+
+
+class User(Base, UserMixin):
+    __tablename__ = 'User'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(VARCHAR(50, 'Chinese_PRC_CI_AS'))
+    password = Column(VARCHAR(50, 'Chinese_PRC_CI_AS'))
+    placeholder1 = Column(VARCHAR(50, 'Chinese_PRC_CI_AS'))
+
+    def verify_password(self, password):
+        if self.password.strip() == str(password).strip():
+            return True
+        return False
+
+
+class Coronavirus(Base):
+    __tablename__ = 'coronavrius'
+
+    序号 = Column(Integer, primary_key=True)
+    课程归属学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任课教师 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    直播_录播软件_选填_ = Column('\u76f4\u64ad\u3001\u5f55\u64ad\u8f6f\u4ef6\uff08\u9009\u586b\uff09',
+                         VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否延期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
 
 
 class 专业(Base):
@@ -38,7 +65,6 @@ class 专业师范性质(Base):
     专业师范性质号 = Column(Unicode(10), primary_key=True)
     专业师范性质 = Column(Unicode(20))
     专业师范性质说明 = Column(Unicode(100))
-
 
 # from flask_admin.contrib.sqla import ModelView
 # admin.add_view(ModelView(专业, g.session))
