@@ -57,7 +57,7 @@ class DataView(ModelView):
     }
 
     form_choices = {
-        '线上教学方式': [('0', '直播'), ('1', '录播')],
+        '线上教学方式': [('直播', '直播'), ('录播', '录播')],
         '慕课平台': [('0', '超星'), ('1', '其它')],
         '是否延期': [('0', '是'), ('1', '否')],
     }
@@ -73,7 +73,10 @@ class DataView(ModelView):
     def get_query(self):
         print (current_user.get_id())
         college = SESSION.query(User.name).filter(User.id == str(current_user.get_id())).first()[0]
-        return super(DataView, self).get_query().filter(Coronavirus.课程归属学院 == college)
+        if college == '教务处':
+            return super(DataView, self).get_query()
+        else:
+            return super(DataView, self).get_query().filter(Coronavirus.课程归属学院 == college)
 
 
 admin.add_view(DataView(Coronavirus, SESSION()))
