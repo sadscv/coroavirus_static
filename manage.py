@@ -42,7 +42,7 @@ class DataView(ModelView):
     can_delete = False
     column_display_pk = True
     column_sortable_list = ('序号', '课程归属学院', '课程号', '班级名称', '是否延期')
-    column_searchable_list = ('学院', '课程号', '任课教师', '课程名称', '班级名称')
+    column_searchable_list = ('课程号', '任课教师', '课程名称', '班级名称', '课程归属学院')
     column_default_sort = '序号'
     page_size = 50
     can_export = True
