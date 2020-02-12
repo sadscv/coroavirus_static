@@ -19,6 +19,7 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     BOOTSTRAP_SERVE_LOCAL = True
+    BABEL_DEFAULT_LOCALE = 'zh_CN'
 
 
     @staticmethod

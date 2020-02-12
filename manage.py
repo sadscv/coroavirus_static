@@ -12,6 +12,7 @@ import os
 from flask import url_for
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_babelex import Babel
 from flask_login import LoginManager, current_user
 from flask_marshmallow import Marshmallow
 from flask_migrate import MigrateCommand
@@ -28,6 +29,8 @@ manager = Manager(app)
 ma = Marshmallow(app)
 admin = Admin(app, name='开课统计', template_mode='bootstrap3')
 login = LoginManager(app)
+babel = Babel(app)
+app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'
 
 app.register_blueprint(main_blueprint)
 
