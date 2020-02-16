@@ -7,6 +7,8 @@
 
 @desc: 
 """
+import re
+
 from flask_admin.form import Select2Field
 from flask_login import UserMixin
 from sqlalchemy import Column, DateTime, VARCHAR, ForeignKey, Integer, \
@@ -43,8 +45,7 @@ class Coronavirus(Base):
     班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     线上教学方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
-    直播_录播软件_选填_ = Column('\u76f4\u64ad\u3001\u5f55\u64ad\u8f6f\u4ef6\uff08\u9009\u586b\uff09',
-                         VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    直播或录播软件_选填 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     是否延期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
 
 
@@ -84,17 +85,20 @@ class MultipleSelect2Field(Select2Field):
             yield (u'__None', self.blank_text, self.data is None)
 
         for value, label in self.choices:
-            yield (value, label, self.coerce(value) in self.data)
+            yield (value, label, value in self.data)
+            # yield (value, label, self.coerce(value) in self.data)
 
     def process_data(self, value):
         """This is called when you create the form with existing data."""
         if value is None:
             self.data = []
         else:
+            patten = '（2）爱课程（中国大学MOOC）'
+            # if re.search(patten, value):
+            #     print ('#########', value, value)
             try:
-                self.data = [value for value in value]
+                self.data = value
                 # self.data = [self.coerce(value) for value in value]
-                print ('#########', value, self.data)
             except (ValueError, TypeError):
                 self.data = [value]
                 print ('valueerror, typeerror')

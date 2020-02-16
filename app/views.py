@@ -7,6 +7,8 @@
 
 @desc: 
 """
+import re
+
 from flask import Blueprint, g, redirect, url_for, flash, render_template, request
 from flask_login import login_user, logout_user
 
@@ -50,6 +52,16 @@ def login():
     return render_template('/login.html', form=form)
 
 
+@main_blueprint.route('/valid')
+def valid():
+
+    coros = g.session.query(Coronavirus).all()
+    # for c in coros:
+    #     print(c.线上教学方式)
+    #     if re.match('')
+    return '200'
+
+
 @main_blueprint.route('/info')
 def info():
     college = [c[0] for c in g.session.query(User.name).all()]
@@ -63,15 +75,15 @@ def info():
     #         print(j)
 
     for c in college:
-        infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院==c).all()
-        onlines = g.session.query(Coronavirus)\
-            .filter(Coronavirus.课程归属学院==c)\
+        infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院 == c).all()
+        onlines = g.session.query(Coronavirus) \
+            .filter(Coronavirus.课程归属学院 == c) \
             .filter(Coronavirus.是否延期.ilike('否%')).all()
-        delays = g.session.query(Coronavirus)\
-            .filter(Coronavirus.课程归属学院==c)\
+        delays = g.session.query(Coronavirus) \
+            .filter(Coronavirus.课程归属学院 == c) \
             .filter(Coronavirus.是否延期.ilike('延期%')).all()
-        others = g.session.query(Coronavirus)\
-            .filter(Coronavirus.课程归属学院==c)\
+        others = g.session.query(Coronavirus) \
+            .filter(Coronavirus.课程归属学院 == c) \
             .filter(Coronavirus.是否延期.ilike('其它%')).all()
         print (c, len(onlines), len(delays), len(others), len(infos))
 
