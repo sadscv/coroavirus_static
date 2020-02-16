@@ -7,6 +7,7 @@
 
 @desc: 
 """
+from flask_admin.form import Select2Field
 from flask_login import UserMixin
 from sqlalchemy import Column, DateTime, VARCHAR, ForeignKey, Integer, \
     String, Unicode
@@ -66,5 +67,56 @@ class 专业师范性质(Base):
     专业师范性质 = Column(Unicode(20))
     专业师范性质说明 = Column(Unicode(100))
 
+
 # from flask_admin.contrib.sqla import ModelView
 # admin.add_view(ModelView(专业, g.session))
+
+
+class MultipleSelect2Field(Select2Field):
+    """Extends select2 field to make it work with postgresql arrays and using choices.
+
+    It is far from perfect and it should be tweaked it a bit more.
+    """
+
+    def iter_choices(self):
+        """Iterate over choices especially to check if one of the values is selected."""
+        if self.allow_blank:
+            yield (u'__None', self.blank_text, self.data is None)
+
+        for value, label in self.choices:
+            yield (value, label, self.coerce(value) in self.data)
+
+    def process_data(self, value):
+        """This is called when you create the form with existing data."""
+        if value is None:
+            self.data = []
+        else:
+            try:
+                self.data = [value for value in value]
+                # self.data = [self.coerce(value) for value in value]
+                print ('#########', value, self.data)
+            except (ValueError, TypeError):
+                self.data = [value]
+                print ('valueerror, typeerror')
+
+    def process_formdata(self, valuelist):
+        """Process posted data."""
+        if not valuelist:
+            return
+
+        if valuelist[0] == '__None':
+            self.data = []
+        else:
+            try:
+                self.data = [value for value in valuelist]
+                # self.data = [self.coerce(value) for value in valuelist]
+            except ValueError:
+                raise ValueError(self.gettext(u'Invalid Choice: could not coerce'))
+
+    def pre_validate(self, form):
+        """Validate sent keys to make sure user don't post data that is not a valid choice."""
+        sent_data = set(self.data)
+        valid_data = {k for k, _ in self.choices}
+        invalid_keys = sent_data - valid_data
+        if invalid_keys:
+            raise ValueError('These values are invalid {}'.format(','.join(invalid_keys)))

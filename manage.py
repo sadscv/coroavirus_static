@@ -12,6 +12,7 @@ import os
 from flask import url_for
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import Select2TagsField
 from flask_babelex import Babel
 from flask_login import LoginManager, current_user
 from flask_marshmallow import Marshmallow
@@ -21,7 +22,7 @@ from flask_script import Shell
 from werkzeug.utils import redirect
 
 from app.create_app import create_app
-from app.models import Coronavirus, User
+from app.models import Coronavirus, User, MultipleSelect2Field
 from app.views import main_blueprint
 
 app, SESSION = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -44,28 +45,52 @@ class DataView(ModelView):
     can_create = False
     can_delete = False
     column_display_pk = True
+    column_list = ['序号', '课程归属学院', '课程号', '班级名称', '是否延期']
     column_sortable_list = ('序号', '课程归属学院', '课程号', '班级名称', '是否延期')
-    column_searchable_list = ('课程号', '任课教师', '课程名称', '班级名称', '课程归属学院')
+    column_searchable_list = ('课程号', '任课教师', '课程名称', '班级名称', '课程归属学院', '序号')
     column_default_sort = '序号'
     page_size = 50
     can_export = True
-    export_types = ['csv', 'xlsx']
+    export_types = ['xlsx']
 
-    form_widget_args = {
-        '课程归属学院': {'readonly':True},
-        '任课教师': {'readonly':True},
-        '课程号': {'readonly':True},
-        '课程名称': {'readonly':True},
-        '班级名称': {'readonly':True}
-    }
+    # form_extra_fields = {
+    #     '线上教学方式': Select2TagsField()
+    # }
 
     form_choices = {
-        # '线上教学方式': [('直播', '直播'), ('录播', '录播')],
-        # '慕课平台': [('0', '超星'), ('1', '其它')],
-        # '是否延期': [('0', '是'), ('1', '否')],
+        '线上教学方式': [('自建慕课', '自建慕课'), ('平台提供的慕课', '平台提供的慕课'), ('直播', '直播'), ('录播', '录播')],
+        '慕课平台': [('学校网络教学平台', '学校网络教学平台'), ('爱课程(中国大学MOOC)', '爱课程(中国大学MOOC)'),
+                 ('超星尔雅', '超星尔雅'), ('学堂在线', '学堂在线'), ('智慧树', '智慧树'), ('其它', '其它')]
+    }
+    CHOICES_TUPLE = (('自建慕课', '自建慕课'), ('平台提供的慕课', '平台提供的慕课'), ('直播', '直播'), ('录播', '录播'))
+    # form_args = dict(线上教学方式=dict(render_kw=dict(multiple="multiple"), choices=CHOICES_TUPLE))
+    # form_args = {
+    #     '线上教学方式': {
+    #         'render_kw': {"multiple": "multiple",
+    #                       "choices": [('自建慕课', '自建慕课'), ('平台提供的慕课', '平台提供的慕课'), ('直播', '直播'), ('录播', '录播')]}
+    #     },
+    #     # '慕课平台': {
+    #     #     'render_kw': {"multiple": "multiple"},
+    #     # }
+    # }
+
+    form_overrides = dict(
+        # FIELD=MultipleSelect2Field,
+        # 线上教学方式=MultipleSelect2Field,
+        # 慕课平台=MultipleSelect2Field
+    )
+
+    form_widget_args = {
+        '课程归属学院': {'readonly': True},
+        '任课教师': {'readonly': True},
+        '课程号': {'readonly': True},
+        '课程名称': {'readonly': True},
+        '班级名称': {'readonly': True}
     }
 
-    # list_columns = ['序号', '班级名称']
+    def on_model_change(self, form, model, is_created):
+        if len(form.线上教学方式.raw_data) > 1:
+            model.线上教学方式 = ','.join(form.线上教学方式.raw_data)
 
     def is_accessible(self):
         return current_user.is_authenticated

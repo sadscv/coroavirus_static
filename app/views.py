@@ -11,7 +11,7 @@ from flask import Blueprint, g, redirect, url_for, flash, render_template, reque
 from flask_login import login_user, logout_user
 
 from app.form import LoginForm
-from app.models import User
+from app.models import User, Coronavirus
 
 main_blueprint = Blueprint('main', __name__)
 
@@ -48,3 +48,31 @@ def login():
             return redirect(request.args.get('next') or url_for('coronavirus.index_view'))
         flash('Invalid username or password')
     return render_template('/login.html', form=form)
+
+
+@main_blueprint.route('/info')
+def info():
+    college = [c[0] for c in g.session.query(User.name).all()]
+    # infos = [d[0] for d in g.session.query(Coronavirus.是否延期).all()]
+    # infos = set(infos)
+    # for i in infos:
+    #     if str(i).startswith("延期"):
+    #         print(i)
+    # for j in infos:
+    #     if str(j).startswith("其它"):
+    #         print(j)
+
+    for c in college:
+        infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院==c).all()
+        onlines = g.session.query(Coronavirus)\
+            .filter(Coronavirus.课程归属学院==c)\
+            .filter(Coronavirus.是否延期.ilike('否%')).all()
+        delays = g.session.query(Coronavirus)\
+            .filter(Coronavirus.课程归属学院==c)\
+            .filter(Coronavirus.是否延期.ilike('延期%')).all()
+        others = g.session.query(Coronavirus)\
+            .filter(Coronavirus.课程归属学院==c)\
+            .filter(Coronavirus.是否延期.ilike('其它%')).all()
+        print (c, len(onlines), len(delays), len(others), len(infos))
+
+    return '200'
