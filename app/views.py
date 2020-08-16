@@ -9,7 +9,8 @@
 """
 import re
 
-from flask import Blueprint, g, redirect, url_for, flash, render_template, request
+from flask import Blueprint, g, redirect, url_for, flash, render_template, \
+    request
 from flask_login import login_user, logout_user
 
 from app.form import LoginForm
@@ -37,6 +38,21 @@ def logout():
     return 'Logged out'
 
 
+@main_blueprint.route('/tmp')
+def tmp():
+    result = []
+    week = '一二三四五六日'
+    date = ['12', '3','4', '5', '67', '89', '晚']
+    for i in range(len(week)):
+        for j in range(len(date)):
+            tmp1 = str(i+1) + '-' + str(j+1)
+            tmp2 = '周' + week[i] + '-' + date[j]
+            tmp3 = (tmp2, tmp2)
+            result.append(tmp3)
+    print(result)
+    return '200'
+
+
 @main_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -47,18 +63,79 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             # flash('登录成功')
-            return redirect(request.args.get('next') or url_for('coronavirus.index_view'))
+            return redirect(
+                request.args.get('next') or url_for('normal.index_view'))
         flash('Invalid username or password')
     return render_template('/login.html', form=form)
 
 
 @main_blueprint.route('/valid')
 def valid():
-
     coros = g.session.query(Coronavirus).all()
     # for c in coros:
     #     print(c.线上教学方式)
     #     if re.match('')
+    return '200'
+
+@main_blueprint.route('/info_live_platform')
+def info_live_platform():
+    college = [c[0] for c in g.session.query(User.name).all()]
+
+    qq = g.session.query(Coronavirus) \
+        .filter(Coronavirus.直播或录播软件_选填.ilike('%QQ%'))
+    wechat = g.session.query(Coronavirus) \
+        .filter(Coronavirus.直播或录播软件_选填.ilike('%微信%'))
+    tx_meeting = g.session.query(Coronavirus) \
+        .filter(Coronavirus.直播或录播软件_选填.ilike('%腾讯会议%'))
+    ding = g.session.query(Coronavirus) \
+        .filter(Coronavirus.直播或录播软件_选填.ilike('%钉钉%'))
+    result = [qq, wechat, tx_meeting, ding]
+
+    for c in college:
+        tmp = []
+        for platform in result:
+            tmp.append(len(platform.filter(Coronavirus.课程归属学院 == c).all()))
+        print(c, tmp)
+    tmp = []
+    for r in result:
+        tmp.append(len(r.all()))
+    print('合计', tmp)
+        # infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院 == c).all()
+
+
+    return '200'
+
+
+@main_blueprint.route('/info_platform')
+def info_platform():
+    college = [c[0] for c in g.session.query(User.name).all()]
+
+    aikechen = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%中国大学%'))
+    chaoxin = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%超星%'))
+    xuetang = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%学堂在线%'))
+    zhihuishu = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%智慧树%'))
+    school = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%学校网络教学平台%'))
+    others = g.session.query(Coronavirus) \
+        .filter(Coronavirus.慕课平台.ilike('%其它%'))
+    result = [aikechen, chaoxin, xuetang, zhihuishu, school, others]
+
+    for c in college:
+        tmp = []
+        for platform in result:
+            tmp.append(len(platform.filter(Coronavirus.课程归属学院 == c).all()))
+        print(c, tmp)
+    tmp = []
+    for r in result:
+        tmp.append(len(r.all()))
+    print('合计', tmp)
+        # infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院 == c).all()
+
+
     return '200'
 
 
@@ -75,7 +152,8 @@ def info():
     #         print(j)
 
     for c in college:
-        infos = g.session.query(Coronavirus).filter(Coronavirus.课程归属学院 == c).all()
+        infos = g.session.query(Coronavirus).filter(
+            Coronavirus.课程归属学院 == c).all()
         onlines = g.session.query(Coronavirus) \
             .filter(Coronavirus.课程归属学院 == c) \
             .filter(Coronavirus.是否延期.ilike('否%')).all()
@@ -85,6 +163,6 @@ def info():
         others = g.session.query(Coronavirus) \
             .filter(Coronavirus.课程归属学院 == c) \
             .filter(Coronavirus.是否延期.ilike('其它%')).all()
-        print (c, len(onlines), len(delays), len(others), len(infos))
+        print(c, len(onlines), len(delays), len(others), len(infos))
 
     return '200'

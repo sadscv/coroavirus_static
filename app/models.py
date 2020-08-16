@@ -12,7 +12,7 @@ import re
 from flask_admin.form import Select2Field
 from flask_login import UserMixin
 from sqlalchemy import Column, DateTime, VARCHAR, ForeignKey, Integer, \
-    String, Unicode
+    String, Unicode, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -34,6 +34,8 @@ class User(Base, UserMixin):
         return False
 
 
+
+
 class Coronavirus(Base):
     __tablename__ = 'coronavrius'
 
@@ -47,6 +49,22 @@ class Coronavirus(Base):
     慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     直播或录播软件_选填 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     是否延期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+
+
+class Normal(Base):
+    __tablename__ = 'normal'
+
+    序号 = Column(Integer, primary_key=True)
+    课程归属学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任课教师 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上开课 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    增补时段 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否转入线下 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    其它备注 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
 
 
 class 专业(Base):
