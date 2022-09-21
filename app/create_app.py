@@ -34,7 +34,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     moment.init_app(app)
 
-    my_engine = create_engine(config[config_name].SQLALCHEMY_DATABASE_URI, pool_size=20, max_overflow=0)
+    my_engine = create_engine(config[config_name].SQLALCHEMY_DATABASE_URI, pool_size=200, max_overflow=2000)
     SESSION = scoped_session(sessionmaker(bind=my_engine))
 
 

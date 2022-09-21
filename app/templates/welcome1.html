@@ -238,7 +238,7 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 {#<h1> 系统维护中 </h1>#}
 <h1>教学状态信息填报：</h1>
 
-{#                <ul><span></span>#}
+                <ul><span></span>
 {#                    <br>#}
 {##}
 {#                <li>线上教学填报入口已关闭，如有特殊情况需转入线上教学，请按正常流程提交调（停）课申请表至学院教务办公室 </li>#}
@@ -249,18 +249,18 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 {#    <li>#}
 {#        第12周教学状态信息<a href="{{ url_for('admin_view_pre.index_view') }}"> <b>预填报入口</b> </a>#}
 {#    </li>#}
-    <li>
-        线上教学填报系统<a href="{{ url_for('admin_view_normal.index_view') }}"> <b>填报入口</b> </a>
-    </li>
+{#    <li>#}
+{#        线上教学填报系统<a href="{{ url_for('admin_view_normal.index_view') }}"> <b>填报入口</b> </a>#}
+{#    </li>#}
                 </ul>
 
 
-{#                <li><span>外聘教师信息填报：</span>#}
-{#                    <a href="{{ url_for('外聘教师.index_view') }}"> <b>外聘教师入口(填报已结束）</b> </a>#}
-{#                    <h6>#}
-{#                        <small>(外聘教师人员名单为上年度提交的外聘人员名单,请学院在此基础上结合实际情况,对外聘人员名单进行增删校准,确保各项信息无误。)</small>#}
-{#                    </h6>#}
-{#                </li>#}
+                <li><span>外聘教师信息填报：</span>
+                    <a href="{{ url_for('外聘教师.index_view') }}"> <b>外聘教师入口(填报已结束）</b> </a>
+                    <h6>
+                        <small>(外聘教师人员名单为上年度提交的外聘人员名单,请学院在此基础上结合实际情况,对外聘人员名单进行增删校准,确保各项信息无误。)</small>
+                    </h6>
+                </li>
     <br>
 {#                <h1>填报说明：</h1>#}
 {#    <p> <h6>疫情防控期间，请学院在本系统中维护好受疫情影响的异动课程状态数据，以保证正常教学秩序。</h6></p>#}
@@ -297,19 +297,19 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 {#        <li> 对于在QQ或钉钉群内直播的课程，请写明群号码，任课老师需确保在每堂课开始前能及时处理加群申请。（暂不支持通过微信群进行教学，请使用微信群教学的老师改用其它方式进行） </li>#}
 {#    </ul>#}
 {##}
-{#    <br>#}
-{#            <h2>使用说明:</h2>#}
-{#                    <img src="../static/2.png"></ul>#}
-{#                <br>#}
-{#    <li>#}
-{#                修改信息：点击每一行数据最左侧的小铅笔图标 <br>#}
-{#    </li>#}
-{#    <li>#}
-{#        导出为excel：点击‘导出’按钮<br>#}
-{#    </li>#}
-{#                删除外聘教师：点击每行数据最左侧的垃圾桶标识<br>#}
-{#                增加外聘教师：点击上方的‘创建’按钮<br>#}
-{#                </p>#}
+    <br>
+            <h2>使用说明:</h2>
+                    <img src="../static/2.png"></ul>
+                <br>
+    <li>
+                修改信息：点击每一行数据最左侧的小铅笔图标 <br>
+    </li>
+    <li>
+        导出为excel：点击‘导出’按钮<br>
+    </li>
+                删除外聘教师：点击每行数据最左侧的垃圾桶标识<br>
+                增加外聘教师：点击上方的‘创建’按钮<br>
+                </p>
 {##}
 {##}
 {##}

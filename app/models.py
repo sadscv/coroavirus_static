@@ -14,7 +14,7 @@ from flask_login import UserMixin
 from sqlalchemy import Column, DateTime, VARCHAR, ForeignKey, Integer, \
     String, Unicode, Index
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -33,10 +33,21 @@ class User(Base, UserMixin):
             return True
         return False
 
+    def verify_md5_password(self, md5):
+        pass
+        # if md5(self.password.strip())
+
+class 教资考试(Base):
+    __tablename__ = 'exam'
+    序号 = Column(Integer, primary_key=True)
+    教工单位 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    姓名 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    工号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否需要隔离 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    备注 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
 
 
-
-class Coronavirus(Base):
+class 线上教学(Base):
     __tablename__ = 'coronavrius'
 
     序号 = Column(Integer, primary_key=True)
@@ -45,10 +56,135 @@ class Coronavirus(Base):
     课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
     班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    授课方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    # 转入线上授课日期 = Column(DateTime())
+    # 结束线上授课日期 = Column(DateTime())
     线上教学方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
-    慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
-    直播或录播软件_选填 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
-    是否延期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学入口 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    申报原因 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    审核状态 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+
+class 特殊课程安排(Base):
+    __tablename__ = '特殊课程安排'
+
+    开课学期 = Column(DateTime(), primary_key=True)
+    课程管理单位 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    教师工号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    教师姓名 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    周次 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    星期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    节次 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    教室 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    备注 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    更新时间 = Column(DateTime())
+
+
+class 预填报课程(Base):
+    __tablename__ = 'coronavrius_old'
+
+    序号 = Column(Integer, primary_key=True)
+    课程归属学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任课教师 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    授课方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    # 转入线上授课日期 = Column(DateTime())
+    # 结束线上授课日期 = Column(DateTime())
+    线上教学方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学入口 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    申报原因 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    审核状态 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+
+class 第六周课程(Base):
+    __tablename__ = 'coronavrius_6'
+
+    序号 = Column(Integer, primary_key=True)
+    课程归属学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任课教师 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    授课方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    # 转入线上授课日期 = Column(DateTime())
+    # 结束线上授课日期 = Column(DateTime())
+    线上教学方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学慕课平台 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    线上教学入口 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    申报原因 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    审核状态 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    最后更新时间 = Column(DateTime())
+
+class 延期课程(Base):
+    __tablename__ = 'coronavrius_null'
+
+    序号 = Column(Integer, primary_key=True)
+    课程归属学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任课教师 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    课程名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    班级名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    授课方式 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    开课周次 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    申报原因 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否已补课 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    补课详情 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+
+
+class Major(Base):
+    __tablename__ = 'major'
+    学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    专业代码 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    专业名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    # teacher = relationship('在职教师', backref=backref('teacher'))
+
+    # major = relationship('Major', backref=backref('major'))
+
+
+class 在职教师(Base):
+    __tablename__ = 'teacher'
+    学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    工号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'), primary_key=True)
+    姓名 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任教类型 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任教专业名称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任教专业代码 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    # 任教专业代码 = Column(VARCHAR(2147483647), ForeignKey('Major.专业代码'))
+    专业任教时间 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否实验技术人员 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否双师双能型 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否工程背景 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否具有国境外一年及以上经历 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    是否行业背景 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+
+    # major = relationship('Major', backref=backref('major'))
+
+
+class 外聘教师(Base):
+    __tablename__ = 'tmpteacher'
+
+    序号 = Column(Integer, primary_key=True, nullable=False)
+    工号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    姓名 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    性别 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    出生年月 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    聘任时间 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    任职状态 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    聘期 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    单位号 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    学院 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    学历 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    最高学位 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    专业技术职称 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    工作单位类别 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    承担本科教学任务 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
+    地区 = Column(VARCHAR(2147483647, 'Chinese_PRC_CI_AS'))
 
 
 class Normal(Base):
@@ -76,7 +212,8 @@ class 专业(Base):
     专业师范性质号 = Column(ForeignKey('专业师范性质.专业师范性质号'), nullable=False)
     设立时间 = Column(DateTime)
 
-    专业师范性质 = relationship('专业师范性质', primaryjoin='专业.专业师范性质号 == 专业师范性质.专业师范性质号', backref='专业S')
+    专业师范性质 = relationship('专业师范性质', primaryjoin='专业.专业师范性质号 == 专业师范性质.专业师范性质号',
+                          backref='专业S')
 
 
 class 专业师范性质(Base):
@@ -119,7 +256,7 @@ class MultipleSelect2Field(Select2Field):
                 # self.data = [self.coerce(value) for value in value]
             except (ValueError, TypeError):
                 self.data = [value]
-                print ('valueerror, typeerror')
+                print('valueerror, typeerror')
 
     def process_formdata(self, valuelist):
         """Process posted data."""
@@ -133,7 +270,8 @@ class MultipleSelect2Field(Select2Field):
                 self.data = [value for value in valuelist]
                 # self.data = [self.coerce(value) for value in valuelist]
             except ValueError:
-                raise ValueError(self.gettext(u'Invalid Choice: could not coerce'))
+                raise ValueError(
+                    self.gettext(u'Invalid Choice: could not coerce'))
 
     def pre_validate(self, form):
         """Validate sent keys to make sure user don't post data that is not a valid choice."""
@@ -141,4 +279,5 @@ class MultipleSelect2Field(Select2Field):
         valid_data = {k for k, _ in self.choices}
         invalid_keys = sent_data - valid_data
         if invalid_keys:
-            raise ValueError('These values are invalid {}'.format(','.join(invalid_keys)))
+            raise ValueError(
+                'These values are invalid {}'.format(','.join(invalid_keys)))

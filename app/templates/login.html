@@ -3,9 +3,20 @@
 
 {% block title %}Login{% endblock %}
 
+{% macro render_field(field) %}
+  <th scope="row">{{ field.label }}
+  <td>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
 {% block page_content %}
 <div class="page-header">
     <h1>login page</h1>
 </div>
-{{ wtf.quick_form(form) }}
+    {{ wtf.quick_form(form) }}
 {% endblock %}

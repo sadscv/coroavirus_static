@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<div class="page-header">
+    <h1>教室申请单</h1>
+</div>
+
+<div class="content">
+    <div>
+        <p>因 &nbsp <span>{{ json_data.apply_reason }}</span> &nbsp 需要，特申请
+            <b>{{ json_data.apply_building }}</b>
+            <span><b>{{ json_data.apply_classrooms }}</b>&nbsp</span> 教室 &nbsp 于 &nbsp <span><b>{{ json_data.apply_date }}</b> &nbsp</span>
+            第 &nbsp <span><b>{{ json_data.timeslots }}</b></span> &nbsp临时使用。</p>
+    </div>
+</div>
+<div class="page-sign">
+    <div class="teacher-info">
+        <p>责任教师:
+            &nbsp{{ json_data.teacher_name }}({{ json_data.teacher_id }})</p>
+        <p>教师签名: &nbsp</p>
+        <p>申请日期: &nbsp{{ json_data.submit_date }}</p>
+    </div>
+
+    <div class="college-info">
+        <p>责任单位: &nbsp{{ json_data.apply_college }}</p>
+        <p>分管领导签名: &nbsp</p>
+        <p>单位盖章: &nbsp</p>
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+<div class="school-info">
+    <p>教务处意见: <b>同意申请!</b></p>
+    <div style="display: flex">
+        <div class="inline">
+            <p>教务处盖章:</p>
+        </div>
+        <div class="inline" style="margin-left: 30px">
+            <img src="logo.png" style=" width:140px ;height:140px"/>
+        </div>
+    </div>
+
+    <div class="comment-info">
+        <small>
+            注意事项:<br/>
+            <a>1. 教室申请经由责任教师签名、分管领导签名、单位盖章后生效，任一流程缺失将视为无效申请。</a><br/>
+            <a>2. 教室申请单应在使用日期前送达至相应楼栋的楼管处（惟义楼为W6101）,以便楼管及时为您开门。</a><br/>
+            <a>3. 多媒体设备的使用必须有老师在场，违规使用教室造成不良后果的，将追究相关人员责任。</a><br/>
+            <a>4. 使用者务必爱惜教室设备，如有损坏应照价赔偿。</a><br/>
+        </small>
+    </div>
+
+    <div style="position: absolute; bottom: 0; left: 0;font-size: smaller">
+        <small>
+            <a>业务编号:&nbsp{{ json_data.ticket_id }}</a>
+        </small>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+<style>
+
+    @font-face {
+        font-family: Microsoft YaHei;
+        src: url('./font/Microsoft YaHei.ttf');
+    }
+
+    body {
+        font-family: Microsoft YaHei, serif;
+    }
+
+    h1 {
+        margin: auto;
+        text-align: center;
+    }
+
+    span {
+        text-decoration: underline
+    }
+
+    .content {
+        padding: 5px 5px 5px 15px;
+        margin-top: 50px;
+    }
+
+    .page-sign {
+        padding: 5px 5px 5px 15px;
+        margin-top: 50px;
+    }
+
+    .teacher-info {
+        display: inline-block;
+        float: left;
+    }
+
+    .college-info {
+        display: inline-block;
+        float: right;
+        margin-right: 50px;
+    }
+
+    .school-info {
+        padding: 5px 5px 5px 15px;
+        margin-top: 50px;
+    }
+    .comment-info {
+        font-size: smaller;
+        margin-top: 80px;
+    }
+
+    .inline {
+        display: inline-block;
+    }
+
+</style>
