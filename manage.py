@@ -35,8 +35,7 @@ admin = Admin(app,
               name='信息收集系统',
               template_mode='bootstrap3',
               index_view=AdminIndexView(
-                  # template='welcome.html',
-                  template='welcome1.html',
+                  template='welcome.html',
                   url='/admin'),
               )
 login = LoginManager(app)
@@ -69,7 +68,7 @@ class ArrangeView(ModelView):
 class TeacherView(ModelView):
     can_create = False
     can_delete = False
-    can_edit = True
+    can_edit = False
     # column_display_pk = True
     column_list = ['学院', '工号', '姓名', '任教类型', '任教专业名称', '任教专业代码', '专业任教时间'] \
         # ,'是否实验技术人员', '是否双师双能型', '是否工程背景', '是否行业背景','是否具有国境外一年及以上经历' ]
@@ -149,9 +148,9 @@ class TeacherView(ModelView):
 
 
 class TmpTeacherView(ModelView):
-    can_create = True
-    can_delete = True
-    can_edit = True
+    can_create = False
+    can_delete = False
+    can_edit = False
     # column_display_pk = True
     column_list = ['学院', '工号', '姓名', '性别', '出生年月', '聘任时间',
                    '任职状态', '聘期', '单位号', '学历', '最高学位',
@@ -719,17 +718,14 @@ class DelayDataView(ModelView):
 #     DataView(线上教学, SESSION(), '报备', endpoint='admin_view_normal'))
 
 # admin.add_view(OldDataView(特殊课程安排, SESSION(),'特殊课程填报', endpoint='admin_view_pre'))
-
-# admin.add_view(OldDataView(第六周课程, SESSION(),'报备', endpoint='admin_view_normal'))
-
+admin.add_view(OldDataView(第六周课程, SESSION(),'报备课程', endpoint='admin_view_normal'))
 # admin.add_view(Week6DataView(第六周课程, SESSION(),'第六周历史数据(谨慎填写)'))
 # admin.add_view(NormalView(Normal, SESSION()))
 # admin.add_view(
 #     DelayDataView(延期课程, SESSION(), '延期课程补报', endpoint='admin_view_delay'))
 
 
-admin.add_view(TeacherView(在职教师, SESSION()))
-admin.add_view(TmpTeacherView(外聘教师, SESSION()))
+# admin.add_view(TmpTeacherView(外聘教师, SESSION()))
 
 
 # admin.add_view(ArrangeView(开课安排, SESSION()))
