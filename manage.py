@@ -68,7 +68,7 @@ class ArrangeView(ModelView):
 class TeacherView(ModelView):
     can_create = False
     can_delete = False
-    can_edit = False
+    can_edit = True
     # column_display_pk = True
     column_list = ['学院', '工号', '姓名', '任教类型', '任教专业名称', '任教专业代码', '专业任教时间'] \
         # ,'是否实验技术人员', '是否双师双能型', '是否工程背景', '是否行业背景','是否具有国境外一年及以上经历' ]
@@ -79,19 +79,18 @@ class TeacherView(ModelView):
     column_searchable_list = (
         '工号', '姓名', '学院')
     form_widget_args = {
-        # '学院': {'readonly': True},
-        # '姓名': {'readonly': True},
-        # '工号': {'readonly': True},
         'description': {
             'rows': 10,
             'style': 'color: black'
         },
-
+        '学院': {'readonly': True},
+        '姓名': {'readonly': True},
+        '工号': {'readonly': True},
         '是否实验技术人员': {
             'readonly': True
         },
         '是否双师双能型': {
-            'readonly': True
+            'readonly': True,
         },
         '是否工程背景': {
             'readonly': True
@@ -126,7 +125,7 @@ class TeacherView(ModelView):
     edit_modal = True
     form_excluded_columns = ['学院']
 
-    # excluded_list_columns = [# '是否实验技术人员', '是否双师双能型', '是否工程背景', '是否具有国境外一年及以上经历', '是否行业背景']
+    excluded_list_columns = ['是否实验技术人员', '是否双师双能型', '是否工程背景', '是否具有国境外一年及以上经历', '是否行业背景']
 
     # form_ajax_refs = {"任教专业代码": {"fields": (Major.专业代码,)}}
 
@@ -326,7 +325,7 @@ class DataView(ModelView):
     column_list = ['序号', '课程归属学院', '任课教师', '课程号', '课程名称', '班级名称', '授课方式',
                    '线上教学方式', '线上教学慕课平台', '线上教学入口', '申报原因', '审核状态']
     column_sortable_list = ('授课方式', '序号', '课程归属学院', '课程号', '班级名称','审核状态')
-    column_searchable_list = ('申报原因','课程归属学院', '任课教师', '课程号', '课程名称', '班级名称')
+    column_searchable_list = ('任课教师', '课程号', '课程名称', '班级名称', '课程归属学院')
     column_default_sort = [('授课方式', False), ('序号', False)]
 
     # column_labels = {
@@ -360,8 +359,7 @@ class DataView(ModelView):
     ('学堂在线', '学堂在线'), ('其它', '其它'), ('无', '无'))
 
     form_choices = {
-        '授课方式': [('转入线上教学', '转入线上教学'), ('延期授课', '延期授课'), ('线下教学', '线下教学')],
-        # ('线下教学(仅限室外课程)', '线下教学(仅限室外课程)'),
+        '授课方式': [('转入线上教学', '转入线上教学'), ('延期授课', '延期授课')],
         '线上教学方式': CHOICES_TUPLE_1,
         '线上教学慕课平台': CHOICES_TUPLE_2,
         #     '慕课平台': [('学校网络教学平台', '学校网络教学平台'), ('爱课程(中国大学MOOC)', '爱课程(中国大学MOOC)'),
@@ -490,7 +488,7 @@ class OldDataView(ModelView):
     column_list = ['序号', '课程归属学院', '任课教师', '课程号', '课程名称', '班级名称', '授课方式',
                    '线上教学方式', '线上教学慕课平台', '线上教学入口', '申报原因', '审核状态']
     column_sortable_list = ('授课方式', '序号', '课程归属学院', '课程号', '班级名称','审核状态')
-    column_searchable_list = ('申报原因','课程归属学院', '任课教师', '课程号', '课程名称', '班级名称')
+    column_searchable_list = ('申报原因','课程归属学院', '任课教师', '课程号', '课程名称', '班级名称', '审核状态')
     column_default_sort = [('授课方式', False), ('序号', False)]
     form_excluded_columns = [('最后更新时间')]
 
@@ -520,13 +518,13 @@ class OldDataView(ModelView):
         ('录播（不建议使用）', '录播（不建议使用）'),
         ('无', '无'))
     CHOICES_TUPLE_2 = (
-    ('雨课堂（建议）', '雨课堂（建议）'), ('超星学习通（建议）', '超星学习通（建议）'), ('腾讯会议', '腾讯会议'),
+    ('雨课堂（推荐）', '雨课堂（推荐）'), ('超星学习通（推荐）', '超星学习通（推荐）'), ('腾讯会议', '腾讯会议'),
     ('爱课程(中国大学MOOC)', '爱课程(中国大学MOOC)'), ('智慧树', '智慧树'), ('钉钉直播', '钉钉直播'),
     ('学堂在线', '学堂在线'), ('其它', '其它'), ('无', '无'))
 
     form_choices = {
-        '授课方式': [('转入线上教学', '转入线上教学'), ('延期授课', '延期授课'), ('线下教学', '线下教学')],
-        # ('线下教学(仅限室外课程)', '线下教学(仅限室外课程)'),
+        '授课方式': [('转入线上教学', '转入线上教学'), ('延期授课', '延期授课')],
+
         '线上教学方式': CHOICES_TUPLE_1,
         '线上教学慕课平台': CHOICES_TUPLE_2,
         #     '慕课平台': [('学校网络教学平台', '学校网络教学平台'), ('爱课程(中国大学MOOC)', '爱课程(中国大学MOOC)'),
@@ -552,12 +550,12 @@ class OldDataView(ModelView):
         '线上教学入口': {
             'render_kw': {
 
-                'placeholder': '请填报平台网址、会议号（含密码）、群号等，「线上教学平台」选择"雨课堂"或"超星学习通"的老师无需填写线上教学入口'
+                'placeholder': '请填报平台网址、会议号（含密码）、群号等，「线上教学平台」选择"雨课堂"或"超星学习通"的老师无需填写'
             }
         },
         '申报原因': {
             'render_kw': {
-                'placeholder': '请填写详细申报原因'
+                'placeholder': ''
             }
 
         }
@@ -718,13 +716,14 @@ class DelayDataView(ModelView):
 #     DataView(线上教学, SESSION(), '报备', endpoint='admin_view_normal'))
 
 # admin.add_view(OldDataView(特殊课程安排, SESSION(),'特殊课程填报', endpoint='admin_view_pre'))
-admin.add_view(OldDataView(第六周课程, SESSION(),'报备课程', endpoint='admin_view_normal'))
+admin.add_view(OldDataView(第六周课程, SESSION(),'课程报备', endpoint='admin_view_normal'))
 # admin.add_view(Week6DataView(第六周课程, SESSION(),'第六周历史数据(谨慎填写)'))
 # admin.add_view(NormalView(Normal, SESSION()))
 # admin.add_view(
 #     DelayDataView(延期课程, SESSION(), '延期课程补报', endpoint='admin_view_delay'))
 
 
+admin.add_view(TeacherView(在职教师, SESSION()))
 # admin.add_view(TmpTeacherView(外聘教师, SESSION()))
 
 
